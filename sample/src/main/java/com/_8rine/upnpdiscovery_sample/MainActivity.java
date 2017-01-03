@@ -12,7 +12,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com._8rine.upnpdiscovery.SSDPDevice;
+import com._8rine.upnpdiscovery.UPnPDevice;
 import com._8rine.upnpdiscovery.UPnPDiscovery;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -49,14 +49,14 @@ public class MainActivity extends AppCompatActivity {
         mRecyclerView.setAdapter(mAdapter);
 
 
-        UPnPDiscovery.discoverDevices(this, new UPnPDiscovery.OnDiscoveryListener() {
+        UPnPDiscovery.discoveryDevices(this, new UPnPDiscovery.OnDiscoveryListener() {
             @Override
             public void OnStart() {
                 Toast.makeText(mContext, "Start discovery", Toast.LENGTH_SHORT).show();
             }
 
             @Override
-            public void OnFoundNewDevice(SSDPDevice device) {
+            public void OnFoundNewDevice(UPnPDevice device) {
                 Toast.makeText(mContext, "Found new device", Toast.LENGTH_SHORT).show();
                 Log.d("App", device.getLocation());
                 myDataset.add(device.toString());
@@ -64,15 +64,15 @@ public class MainActivity extends AppCompatActivity {
             }
 
             @Override
-            public void OnFinish(HashSet<SSDPDevice> devices) {
-                for (SSDPDevice device : devices) {
+            public void OnFinish(HashSet<UPnPDevice> devices) {
+                for (UPnPDevice device : devices) {
                    // To do something
                 }
                 Toast.makeText(mContext, "Discovery finished", Toast.LENGTH_SHORT).show();
             }
 
             @Override
-            public void OnError(IOException e) {
+            public void OnError(Exception e) {
                 Toast.makeText(mContext, "Error: " + e.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
             }
         });

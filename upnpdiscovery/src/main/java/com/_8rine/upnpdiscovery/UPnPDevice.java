@@ -6,7 +6,7 @@ import com.stanfy.gsonxml.XmlParserCreator;
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserFactory;
 
-public class SSDPDevice {
+public class UPnPDevice {
 
     private static String LOCATION_TEXT = "LOCATION: ";
     private static String SERVER_TEXT = "SERVER: ";
@@ -40,7 +40,7 @@ public class SSDPDevice {
     private String mUDN;
     private String mURLBase;
 
-    SSDPDevice (String hostAddress, String header) {
+    UPnPDevice(String hostAddress, String header) {
         this.mHeader = header;
         this.mHostAddress = hostAddress;
         this.mLocation = parseHeader(header, LOCATION_TEXT);

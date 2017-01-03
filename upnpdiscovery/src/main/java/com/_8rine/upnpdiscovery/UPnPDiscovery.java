@@ -35,7 +35,7 @@ public class UPnPDiscovery extends AsyncTask {
     private static int DEFAULT_PORT = 1900;
     private static final String DEFAULT_ADDRESS = "239.255.255.250";
 
-    private HashSet<SSDPDevice> devices = new HashSet<>();
+    private HashSet<UPnPDevice> devices = new HashSet<>();
     private Context mContext;
     private Activity mActivity;
     private int mTheardsCount = 0;
@@ -45,9 +45,9 @@ public class UPnPDiscovery extends AsyncTask {
 
     public interface OnDiscoveryListener {
         void OnStart();
-        void OnFoundNewDevice(SSDPDevice device);
-        void OnFinish(HashSet<SSDPDevice> devices);
-        void OnError(IOException e);
+        void OnFoundNewDevice(UPnPDevice device);
+        void OnFinish(HashSet<UPnPDevice> devices);
+        void OnError(Exception e);
     }
 
     private OnDiscoveryListener mListener;
@@ -102,7 +102,7 @@ public class UPnPDiscovery extends AsyncTask {
                     socket.receive(datagramPacket);
                     String response = new String(datagramPacket.getData(), 0, datagramPacket.getLength());
                     if (response.substring(0, 12).toUpperCase().equals("HTTP/1.1 200")) {
-                        SSDPDevice device = new SSDPDevice(datagramPacket.getAddress().getHostAddress(), response);
+                        UPnPDevice device = new UPnPDevice(datagramPacket.getAddress().getHostAddress(), response);
                         mTheardsCount++;
                         getData(device.getLocation(), device);
                     }
@@ -126,18 +126,7 @@ public class UPnPDiscovery extends AsyncTask {
         return null;
     }
 
-    public static boolean discoverDevices(Activity activity, OnDiscoveryListener listener) {
-        UPnPDiscovery discover = new UPnPDiscovery(activity, listener);
-        discover.execute();
-        try {
-            Thread.sleep(DISCOVER_TIMEOUT);
-            return true;
-        } catch (InterruptedException e) {
-            return false;
-        }
-    }
-
-    private void getData(final String url, final SSDPDevice device) {
+    private void getData(final String url, final UPnPDevice device) {
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
                 new Response.Listener<String>() {
                     @Override
@@ -165,5 +154,26 @@ public class UPnPDiscovery extends AsyncTask {
         Volley.newRequestQueue(mContext).add(stringRequest);
     }
 
+    public static boolean discoveryDevices(Activity activity, OnDiscoveryListener listener) {
+        UPnPDiscovery discover = new UPnPDiscovery(activity, listener);
+        discover.execute();
+        try {
+            Thread.sleep(DISCOVER_TIMEOUT);
+            return true;
+        } catch (InterruptedException e) {
+            return false;
+        }
+    }
+
+    public static boolean discoveryDevices(Activity activity, OnDiscoveryListener listener, String customQuery, String address, int port) {
+        UPnPDiscovery discover = new UPnPDiscovery(activity, listener, customQuery, address, port);
+        discover.execute();
+        try {
+            Thread.sleep(DISCOVER_TIMEOUT);
+            return true;
+        } catch (InterruptedException e) {
+            return false;
+        }
+    }
 
 }

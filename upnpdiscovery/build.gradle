@@ -1,4 +1,5 @@
 apply plugin: 'com.android.library'
+apply plugin: 'com.novoda.bintray-release'
 
 android {
     compileSdkVersion 25
@@ -7,8 +8,8 @@ android {
     defaultConfig {
         minSdkVersion 15
         targetSdkVersion 25
-        versionCode 1
-        versionName "1.0"
+        versionCode 2
+        versionName "1.0.1"
 
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
 
@@ -18,6 +19,9 @@ android {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
+    }
+    lintOptions {
+        abortOnError false
     }
 }
 
@@ -31,3 +35,14 @@ dependencies {
     compile 'com.stanfy:gson-xml-java:0.1.+'
     testCompile 'junit:junit:4.12'
 }
+
+publish {
+    groupId = 'com.github.custanator'
+    artifactId = 'upnpdiscovery'
+    publishVersion = '1.0.1'
+    desc = 'Discovery UPnP devices via SSDP protocol'
+    licences = ['MIT']
+    uploadName = 'Android-uPnP-Discovery'
+    website = 'https://github.com/custanator/android-upnp-discovery.git'
+}
+
