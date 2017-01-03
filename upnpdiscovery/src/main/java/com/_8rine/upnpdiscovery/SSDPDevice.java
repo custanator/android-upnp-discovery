@@ -1,4 +1,4 @@
-package com.octarine.upnpdiscovery;
+package com._8rine.upnpdiscovery;
 
 import com.stanfy.gsonxml.GsonXml;
 import com.stanfy.gsonxml.GsonXmlBuilder;

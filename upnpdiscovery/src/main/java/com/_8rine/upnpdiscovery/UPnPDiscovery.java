@@ -1,4 +1,4 @@
-package com.octarine.upnpdiscovery;
+package com._8rine.upnpdiscovery;
 
 import android.app.Activity;
 import android.content.Context;

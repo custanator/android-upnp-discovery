@@ -1,4 +1,4 @@
-package com.octarine.upnpdiscovery_sample;
+package com._8rine.upnpdiscovery_sample;
 
 import org.junit.Test;
 

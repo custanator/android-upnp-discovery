@@ -1,4 +1,4 @@
-package com.octarine.upnpdiscovery_sample;
+package com._8rine.upnpdiscovery_sample;
 
 import android.content.Context;
 import android.support.v7.app.AppCompatActivity;
@@ -12,8 +12,8 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.octarine.upnpdiscovery.SSDPDevice;
-import com.octarine.upnpdiscovery.UPnPDiscovery;
+import com._8rine.upnpdiscovery.SSDPDevice;
+import com._8rine.upnpdiscovery.UPnPDiscovery;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashSet;
