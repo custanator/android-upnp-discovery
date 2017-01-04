@@ -7,6 +7,11 @@ Discover UPnP devices via SSDP (Simple Service Discovery Protocol) on the curren
 2. Receive Unicast UDP response from compatile devices
 3. Get and parse XML description file from device
 
+# Demo
+ 
+![alt text](https://github.com/custanator/android-upnp-discovery/raw/master/img/sample0.png "Demo 1")
+![alt text](https://github.com/custanator/android-upnp-discovery/raw/master/img/sample1.png "Demo 2")
+
 # Installation
 ## Gradle
 ```text
