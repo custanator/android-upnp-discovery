@@ -5,6 +5,7 @@ Discover UPnP devices via SSDP (Simple Service Discovery Protocol) on the curren
 
 1. Send M-SEARCH request via Multicast UDP
 2. Receive Unicast UDP response from compatile devices
+3. Get and parse XML description file from device
 
 # Installation
 ## Gradle
