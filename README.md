@@ -9,8 +9,8 @@ Discover UPnP devices via SSDP (Simple Service Discovery Protocol) on the curren
 
 # Demo
  
-![alt text](https://github.com/custanator/android-upnp-discovery/raw/master/img/sample0.png =250x)
-![alt text](https://github.com/custanator/android-upnp-discovery/raw/master/img/sample1.png =250x)
+![](https://github.com/custanator/android-upnp-discovery/raw/master/img/sample0.png =250x100)
+![](https://github.com/custanator/android-upnp-discovery/raw/master/img/sample1.png =250x100)
 
 # Installation
 ## Gradle
