@@ -3,8 +3,8 @@ Discover UPnP devices via SSDP (Simple Service Discovery Protocol) on the curren
 
 ##How:
 
-⋅⋅*Send M-SEARCH request via Multicast UDP
-⋅⋅*Receive Unicast UDP response from compatile devices
+1. Send M-SEARCH request via Multicast UDP
+2. Receive Unicast UDP response from compatile devices
 
 # Installation
 ## Gradle
