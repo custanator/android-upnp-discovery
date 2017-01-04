@@ -1,5 +1,10 @@
 # Android-uPnP-Discovery
-Discovery UPnP devices via SSDP (Simple Service Discovery Protocol)
+Discover UPnP devices via SSDP (Simple Service Discovery Protocol) on the current WiFi network
+
+##How:
+
+⋅⋅*Send M-SEARCH request via Multicast UDP
+⋅⋅*Receive Unicast UDP response from compatile devices
 
 # Installation
 ## Gradle
@@ -107,3 +112,6 @@ UPNPDevice object has methods:
 # Links
 https://en.wikipedia.org/wiki/Universal_Plug_and_Play
 https://en.wikipedia.org/wiki/Simple_Service_Discovery_Protocol
+https://tools.ietf.org/html/draft-cai-ssdp-v1-03#section-2.2.1
+http://www.upnp.org/specs/arch/UPnP-arch-DeviceArchitecture-v1.1.pdf
+https://github.com/berndverst/android-ssdp
