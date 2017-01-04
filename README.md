@@ -57,7 +57,7 @@ String customQuery = "M-SEARCH * HTTP/1.1" + "\r\n" +
 int customPort = 1900;
 String customAddress = "239.255.255.250";
 
-UPnPDiscovery.discoveryDevices(this, new UPnPDiscovery.OnDiscoveryListener() {
+UPnPDiscovery.discoveryDevices(activity, new UPnPDiscovery.OnDiscoveryListener() {
     @Override
     public void OnStart() {
         Log.d("UPnPDiscovery", "Starting discovery");
