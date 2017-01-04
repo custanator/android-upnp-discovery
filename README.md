@@ -110,8 +110,8 @@ UPNPDevice object has methods:
 ```
 
 # Links
-https://en.wikipedia.org/wiki/Universal_Plug_and_Play
-https://en.wikipedia.org/wiki/Simple_Service_Discovery_Protocol
-https://tools.ietf.org/html/draft-cai-ssdp-v1-03#section-2.2.1
-http://www.upnp.org/specs/arch/UPnP-arch-DeviceArchitecture-v1.1.pdf
-https://github.com/berndverst/android-ssdp
+1. https://en.wikipedia.org/wiki/Universal_Plug_and_Play
+2. https://en.wikipedia.org/wiki/Simple_Service_Discovery_Protocol
+3. https://tools.ietf.org/html/draft-cai-ssdp-v1-03#section-2.2.1
+4. http://www.upnp.org/specs/arch/UPnP-arch-DeviceArchitecture-v1.1.pdf
+5. https://github.com/berndverst/android-ssdp
