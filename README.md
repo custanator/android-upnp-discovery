@@ -1,5 +1,11 @@
-# android-upnp-discovery
-Discovery UPnP devices via SSDP protocol
+# Android-uPnP-Discovery
+Discovery UPnP devices via SSDP (Simple Service Discovery Protocol)
+
+# Installation
+## Gradle
+```text
+compile 'com.github.custanator:upnpdiscovery:1.0.1'
+```
 
 # Usage
 
