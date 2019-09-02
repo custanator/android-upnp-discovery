@@ -18,11 +18,11 @@ import java.net.DatagramSocket;
 import java.net.InetAddress;
 import java.util.HashSet;
 
-public class UPnPDiscovery extends AsyncTask {
+public class UPnPDiscovery extends AsyncTask<Activity, UPnPDiscovery.OnDiscoveryListener, Void> {
 
     private static final String TAG = UPnPDiscovery.class.getSimpleName();
 
-    private static int DISCOVER_TIMEOUT = 1500;
+    private static final int DISCOVER_TIMEOUT = 1500;
     private static final String LINE_END = "\r\n";
     private static final String DEFAULT_QUERY = "M-SEARCH * HTTP/1.1" + LINE_END +
             "HOST: 239.255.255.250:1900" + LINE_END +
@@ -32,16 +32,15 @@ public class UPnPDiscovery extends AsyncTask {
             //"ST: urn:schemas-upnp-org:device:InternetGatewayDevice:1" + LINE_END + // Use for Routes
             "ST: ssdp:all" + LINE_END + // Use this for all UPnP Devices
             LINE_END;
-    private static int DEFAULT_PORT = 1900;
     private static final String DEFAULT_ADDRESS = "239.255.255.250";
 
-    private HashSet<UPnPDevice> devices = new HashSet<>();
-    private Context mContext;
-    private Activity mActivity;
-    private int mTheardsCount = 0;
-    private String mCustomQuery;
-    private String mInetAddress;
-    private int mPort;
+    private final HashSet<UPnPDevice> devices = new HashSet<>();
+    private final Context mContext;
+    private final Activity mActivity;
+    private int mTheardsCount;
+    private final String mCustomQuery;
+    private final String mInetAddress;
+    private final int mPort;
 
     public interface OnDiscoveryListener {
         void OnStart();
@@ -50,7 +49,7 @@ public class UPnPDiscovery extends AsyncTask {
         void OnError(Exception e);
     }
 
-    private OnDiscoveryListener mListener;
+    private final OnDiscoveryListener mListener;
 
     private UPnPDiscovery(Activity activity, OnDiscoveryListener listener) {
         mContext = activity.getApplicationContext();
@@ -59,7 +58,7 @@ public class UPnPDiscovery extends AsyncTask {
         mTheardsCount = 0;
         mCustomQuery = DEFAULT_QUERY;
         mInetAddress = DEFAULT_ADDRESS;
-        mPort = DEFAULT_PORT;
+        mPort = 1900;
     }
 
     private UPnPDiscovery(Activity activity, OnDiscoveryListener listener, String customQuery, String address, int port) {
@@ -73,7 +72,7 @@ public class UPnPDiscovery extends AsyncTask {
     }
 
     @Override
-    protected Object doInBackground(Object[] params) {
+    protected Void doInBackground(Activity... activities) {
         mActivity.runOnUiThread(new Runnable() {
             public void run() {
                 mListener.OnStart();
@@ -154,14 +153,12 @@ public class UPnPDiscovery extends AsyncTask {
         Volley.newRequestQueue(mContext).add(stringRequest);
     }
 
-    public static boolean discoveryDevices(Activity activity, OnDiscoveryListener listener) {
+    public static void discoveryDevices(Activity activity, OnDiscoveryListener listener) {
         UPnPDiscovery discover = new UPnPDiscovery(activity, listener);
         discover.execute();
         try {
             Thread.sleep(DISCOVER_TIMEOUT);
-            return true;
-        } catch (InterruptedException e) {
-            return false;
+        } catch (InterruptedException ignored) {
         }
     }
 

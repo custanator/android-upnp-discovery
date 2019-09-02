@@ -1,5 +1,7 @@
 package com._8rine.upnpdiscovery;
 
+import androidx.annotation.NonNull;
+
 import com.stanfy.gsonxml.GsonXml;
 import com.stanfy.gsonxml.GsonXmlBuilder;
 import com.stanfy.gsonxml.XmlParserCreator;
@@ -8,21 +10,16 @@ import org.xmlpull.v1.XmlPullParserFactory;
 
 public class UPnPDevice {
 
-    private static String LOCATION_TEXT = "LOCATION: ";
-    private static String SERVER_TEXT = "SERVER: ";
-    private static String USN_TEXT = "USN: ";
-    private static String ST_TEXT = "ST: ";
-
     private static final String LINE_END = "\r\n";
 
     // From SSDP Packet
-    private String mHostAddress;
+    private final String mHostAddress;
     // SSDP Packet Header
-    private String mHeader;
-    private String mLocation;
-    private String mServer;
-    private String mUSN;
-    private String mST;
+    private final String mHeader;
+    private final String mLocation;
+    private final String mServer;
+    private final String mUSN;
+    private final String mST;
 
     // XML content
     private String mXML;
@@ -43,9 +40,13 @@ public class UPnPDevice {
     UPnPDevice(String hostAddress, String header) {
         this.mHeader = header;
         this.mHostAddress = hostAddress;
+        String LOCATION_TEXT = "LOCATION: ";
         this.mLocation = parseHeader(header, LOCATION_TEXT);
+        String SERVER_TEXT = "SERVER: ";
         this.mServer = parseHeader(header, SERVER_TEXT);
+        String USN_TEXT = "USN: ";
         this.mUSN = parseHeader(header, USN_TEXT);
+        String ST_TEXT = "ST: ";
         this.mST = parseHeader(header, ST_TEXT);
     }
 
@@ -54,6 +55,7 @@ public class UPnPDevice {
         xmlParse(xml);
     }
 
+    @NonNull
     public String toString() {
         return  "FriendlyName: " + mFriendlyName + LINE_END +
                 "ModelName: " + mModelName + LINE_END +

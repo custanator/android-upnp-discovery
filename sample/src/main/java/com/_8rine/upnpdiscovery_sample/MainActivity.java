@@ -1,5 +1,6 @@
 package com._8rine.upnpdiscovery_sample;
 
+import androidx.annotation.NonNull;
 import android.content.Context;
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
@@ -21,12 +22,10 @@ import java.util.HashSet;
 
 public class MainActivity extends AppCompatActivity {
 
-    private RecyclerView mRecyclerView;
     private RecyclerView.Adapter mAdapter;
-    private RecyclerView.LayoutManager mLayoutManager;
     private Context mContext;
 
-    ArrayList<String> myDataset = new ArrayList<>();
+    private final ArrayList<String> myDataset = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,14 +33,14 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         mContext = this;
-        mRecyclerView = (RecyclerView) findViewById(R.id.recyclerView);
+        RecyclerView mRecyclerView = findViewById(R.id.recyclerView);
 
         // use this setting to improve performance if you know that changes
         // in content do not change the layout size of the RecyclerView
         mRecyclerView.setHasFixedSize(true);
 
         // use a linear layout manager
-        mLayoutManager = new LinearLayoutManager(this);
+        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(this);
         mRecyclerView.setLayoutManager(mLayoutManager);
 
         // specify an adapter (see also next example)
@@ -65,9 +64,7 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void OnFinish(HashSet<UPnPDevice> devices) {
-                for (UPnPDevice device : devices) {
-                   // To do something
-                }
+                // To do something
                 Toast.makeText(mContext, "Discovery finished", Toast.LENGTH_SHORT).show();
             }
 
@@ -80,13 +77,13 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
-        private ArrayList<String> mDataset;
+        private final ArrayList<String> mDataset;
 
         class ViewHolder extends RecyclerView.ViewHolder {
-            TextView mTextView;
+            final TextView mTextView;
             ViewHolder(View view) {
                 super(view);
-                mTextView = (TextView) view.findViewById(R.id.textView);
+                mTextView = view.findViewById(R.id.textView);
             }
         }
 
@@ -94,6 +91,7 @@ public class MainActivity extends AppCompatActivity {
             mDataset = myDataset;
         }
 
+        @NonNull
         @Override
         public MyAdapter.ViewHolder onCreateViewHolder(ViewGroup parent,
                                                        int viewType) {
