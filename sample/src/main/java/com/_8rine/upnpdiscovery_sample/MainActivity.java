@@ -25,7 +25,7 @@ public class MainActivity extends AppCompatActivity {
     private RecyclerView.Adapter mAdapter;
     private Context mContext;
 
-    private final ArrayList<String> myDataset = new ArrayList<>();
+    private final ArrayList<String> myDataSet = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,7 +44,7 @@ public class MainActivity extends AppCompatActivity {
         mRecyclerView.setLayoutManager(mLayoutManager);
 
         // specify an adapter (see also next example)
-        mAdapter = new MyAdapter(myDataset);
+        mAdapter = new MyAdapter(myDataSet);
         mRecyclerView.setAdapter(mAdapter);
 
 
@@ -58,7 +58,7 @@ public class MainActivity extends AppCompatActivity {
             public void OnFoundNewDevice(UPnPDevice device) {
                 Toast.makeText(mContext, "Found new device", Toast.LENGTH_SHORT).show();
                 Log.d("App", device.getLocation());
-                myDataset.add(device.toString());
+                myDataSet.add(device.toString());
                 mAdapter.notifyDataSetChanged();
             }
 

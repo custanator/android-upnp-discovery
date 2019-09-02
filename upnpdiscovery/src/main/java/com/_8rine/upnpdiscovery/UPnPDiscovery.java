@@ -37,9 +37,9 @@ public class UPnPDiscovery extends AsyncTask<Activity, UPnPDiscovery.OnDiscovery
     private final HashSet<UPnPDevice> devices = new HashSet<>();
     private final Context mContext;
     private final Activity mActivity;
-    private int mTheardsCount;
+    private int mThreadsCount;
     private final String mCustomQuery;
-    private final String mInetAddress;
+    private final String mInternetAddress;
     private final int mPort;
 
     public interface OnDiscoveryListener {
@@ -55,9 +55,9 @@ public class UPnPDiscovery extends AsyncTask<Activity, UPnPDiscovery.OnDiscovery
         mContext = activity.getApplicationContext();
         mActivity = activity;
         mListener = listener;
-        mTheardsCount = 0;
+        mThreadsCount = 0;
         mCustomQuery = DEFAULT_QUERY;
-        mInetAddress = DEFAULT_ADDRESS;
+        mInternetAddress = DEFAULT_ADDRESS;
         mPort = 1900;
     }
 
@@ -65,9 +65,9 @@ public class UPnPDiscovery extends AsyncTask<Activity, UPnPDiscovery.OnDiscovery
         mContext = activity.getApplicationContext();
         mActivity = activity;
         mListener = listener;
-        mTheardsCount = 0;
+        mThreadsCount = 0;
         mCustomQuery = customQuery;
-        mInetAddress = address;
+        mInternetAddress = address;
         mPort = port;
     }
 
@@ -84,7 +84,7 @@ public class UPnPDiscovery extends AsyncTask<Activity, UPnPDiscovery.OnDiscovery
             lock.acquire();
             DatagramSocket socket = null;
             try {
-                InetAddress group = InetAddress.getByName(mInetAddress);
+                InetAddress group = InetAddress.getByName(mInternetAddress);
                 int port = mPort;
                 String query = mCustomQuery;
                 socket = new DatagramSocket(port);
@@ -102,7 +102,7 @@ public class UPnPDiscovery extends AsyncTask<Activity, UPnPDiscovery.OnDiscovery
                     String response = new String(datagramPacket.getData(), 0, datagramPacket.getLength());
                     if (response.substring(0, 12).toUpperCase().equals("HTTP/1.1 200")) {
                         UPnPDevice device = new UPnPDevice(datagramPacket.getAddress().getHostAddress(), response);
-                        mTheardsCount++;
+                        mThreadsCount++;
                         getData(device.getLocation(), device);
                     }
                     curTime = System.currentTimeMillis();
@@ -133,8 +133,8 @@ public class UPnPDiscovery extends AsyncTask<Activity, UPnPDiscovery.OnDiscovery
                         device.update(response);
                         mListener.OnFoundNewDevice(device);
                         devices.add(device);
-                        mTheardsCount--;
-                        if (mTheardsCount == 0) {
+                        mThreadsCount--;
+                        if (mThreadsCount == 0) {
                             mActivity.runOnUiThread(new Runnable() {
                                 public void run() {
                                     mListener.OnFinish(devices);
@@ -145,7 +145,7 @@ public class UPnPDiscovery extends AsyncTask<Activity, UPnPDiscovery.OnDiscovery
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                mTheardsCount--;
+                mThreadsCount--;
                 Log.d(TAG, "URL: " + url + " get content error!");
             }
         });

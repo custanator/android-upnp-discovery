@@ -24,7 +24,7 @@ public class UPnPDevice {
     // XML content
     private String mXML;
 
-    // From desctiption XML
+    // From description XML
     private String mDeviceType;
     private String mFriendlyName;
     private String mPresentationURL;
