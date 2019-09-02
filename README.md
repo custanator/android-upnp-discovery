@@ -1,7 +1,7 @@
 # Android-uPnP-Discovery
 Discover UPnP devices via SSDP (Simple Service Discovery Protocol) on the current WiFi network
 
-##How:
+## How:
 
 1. Send M-SEARCH request via Multicast UDP
 2. Receive Unicast UDP response from compatile devices
@@ -15,7 +15,7 @@ Discover UPnP devices via SSDP (Simple Service Discovery Protocol) on the curren
 # Installation
 ## Gradle
 ```text
-compile 'com.github.custanator:upnpdiscovery:1.0.1'
+implementation 'com.github.custanator:upnpdiscovery:1.0.1'
 ```
 
 # Usage
