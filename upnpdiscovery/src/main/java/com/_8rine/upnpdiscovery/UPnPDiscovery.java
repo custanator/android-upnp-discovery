@@ -79,7 +79,7 @@ public class UPnPDiscovery extends AsyncTask {
                 mListener.OnStart();
             }
         });
-        WifiManager wifi = (WifiManager) mContext.getSystemService(Context.WIFI_SERVICE);
+        WifiManager wifi = (WifiManager) mContext.getApplicationContext().getSystemService(Context.WIFI_SERVICE);
         if(wifi != null) {
             WifiManager.MulticastLock lock = wifi.createMulticastLock("The Lock");
             lock.acquire();
