@@ -18,11 +18,11 @@ import java.net.DatagramSocket;
 import java.net.InetAddress;
 import java.util.HashSet;
 
-public class UPnPDiscovery extends AsyncTask {
+public class UPnPDiscovery extends AsyncTask<Activity, UPnPDiscovery.OnDiscoveryListener, Void> {
 
     private static final String TAG = UPnPDiscovery.class.getSimpleName();
 
-    private static int DISCOVER_TIMEOUT = 1500;
+    private static final int DISCOVER_TIMEOUT = 1500;
     private static final String LINE_END = "\r\n";
     private static final String DEFAULT_QUERY = "M-SEARCH * HTTP/1.1" + LINE_END +
             "HOST: 239.255.255.250:1900" + LINE_END +
@@ -32,16 +32,15 @@ public class UPnPDiscovery extends AsyncTask {
             //"ST: urn:schemas-upnp-org:device:InternetGatewayDevice:1" + LINE_END + // Use for Routes
             "ST: ssdp:all" + LINE_END + // Use this for all UPnP Devices
             LINE_END;
-    private static int DEFAULT_PORT = 1900;
     private static final String DEFAULT_ADDRESS = "239.255.255.250";
 
-    private HashSet<UPnPDevice> devices = new HashSet<>();
-    private Context mContext;
-    private Activity mActivity;
-    private int mTheardsCount = 0;
-    private String mCustomQuery;
-    private String mInetAddress;
-    private int mPort;
+    private final HashSet<UPnPDevice> devices = new HashSet<>();
+    private final Context mContext;
+    private final Activity mActivity;
+    private int mThreadsCount;
+    private final String mCustomQuery;
+    private final String mInternetAddress;
+    private final int mPort;
 
     public interface OnDiscoveryListener {
         void OnStart();
@@ -50,42 +49,42 @@ public class UPnPDiscovery extends AsyncTask {
         void OnError(Exception e);
     }
 
-    private OnDiscoveryListener mListener;
+    private final OnDiscoveryListener mListener;
 
     private UPnPDiscovery(Activity activity, OnDiscoveryListener listener) {
         mContext = activity.getApplicationContext();
         mActivity = activity;
         mListener = listener;
-        mTheardsCount = 0;
+        mThreadsCount = 0;
         mCustomQuery = DEFAULT_QUERY;
-        mInetAddress = DEFAULT_ADDRESS;
-        mPort = DEFAULT_PORT;
+        mInternetAddress = DEFAULT_ADDRESS;
+        mPort = 1900;
     }
 
     private UPnPDiscovery(Activity activity, OnDiscoveryListener listener, String customQuery, String address, int port) {
         mContext = activity.getApplicationContext();
         mActivity = activity;
         mListener = listener;
-        mTheardsCount = 0;
+        mThreadsCount = 0;
         mCustomQuery = customQuery;
-        mInetAddress = address;
+        mInternetAddress = address;
         mPort = port;
     }
 
     @Override
-    protected Object doInBackground(Object[] params) {
+    protected Void doInBackground(Activity... activities) {
         mActivity.runOnUiThread(new Runnable() {
             public void run() {
                 mListener.OnStart();
             }
         });
-        WifiManager wifi = (WifiManager) mContext.getSystemService(Context.WIFI_SERVICE);
+        WifiManager wifi = (WifiManager) mContext.getApplicationContext().getSystemService(Context.WIFI_SERVICE);
         if(wifi != null) {
             WifiManager.MulticastLock lock = wifi.createMulticastLock("The Lock");
             lock.acquire();
             DatagramSocket socket = null;
             try {
-                InetAddress group = InetAddress.getByName(mInetAddress);
+                InetAddress group = InetAddress.getByName(mInternetAddress);
                 int port = mPort;
                 String query = mCustomQuery;
                 socket = new DatagramSocket(port);
@@ -103,7 +102,7 @@ public class UPnPDiscovery extends AsyncTask {
                     String response = new String(datagramPacket.getData(), 0, datagramPacket.getLength());
                     if (response.substring(0, 12).toUpperCase().equals("HTTP/1.1 200")) {
                         UPnPDevice device = new UPnPDevice(datagramPacket.getAddress().getHostAddress(), response);
-                        mTheardsCount++;
+                        mThreadsCount++;
                         getData(device.getLocation(), device);
                     }
                     curTime = System.currentTimeMillis();
@@ -134,8 +133,8 @@ public class UPnPDiscovery extends AsyncTask {
                         device.update(response);
                         mListener.OnFoundNewDevice(device);
                         devices.add(device);
-                        mTheardsCount--;
-                        if (mTheardsCount == 0) {
+                        mThreadsCount--;
+                        if (mThreadsCount == 0) {
                             mActivity.runOnUiThread(new Runnable() {
                                 public void run() {
                                     mListener.OnFinish(devices);
@@ -146,7 +145,7 @@ public class UPnPDiscovery extends AsyncTask {
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                mTheardsCount--;
+                mThreadsCount--;
                 Log.d(TAG, "URL: " + url + " get content error!");
             }
         });
@@ -154,14 +153,12 @@ public class UPnPDiscovery extends AsyncTask {
         Volley.newRequestQueue(mContext).add(stringRequest);
     }
 
-    public static boolean discoveryDevices(Activity activity, OnDiscoveryListener listener) {
+    public static void discoveryDevices(Activity activity, OnDiscoveryListener listener) {
         UPnPDiscovery discover = new UPnPDiscovery(activity, listener);
         discover.execute();
         try {
             Thread.sleep(DISCOVER_TIMEOUT);
-            return true;
-        } catch (InterruptedException e) {
-            return false;
+        } catch (InterruptedException ignored) {
         }
     }
 
