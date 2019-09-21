@@ -87,8 +87,11 @@ public class UPnPDiscovery extends AsyncTask<Activity, UPnPDiscovery.OnDiscovery
                 InetAddress group = InetAddress.getByName(mInternetAddress);
                 int port = mPort;
                 String query = mCustomQuery;
-                socket = new DatagramSocket(port);
+               
+                socket = new DatagramSocket(null);
                 socket.setReuseAddress(true);
+                socket.setBroadcast(true);
+                socket.bind(new InetSocketAddress(port));
 
                 DatagramPacket datagramPacketRequest = new DatagramPacket(query.getBytes(), query.length(), group, port);
                 socket.send(datagramPacketRequest);
